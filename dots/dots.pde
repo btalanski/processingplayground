@@ -4,41 +4,45 @@ class Dot {
     float size;
 
     Dot(){
-        // Set a random point of origin
-        x = random(0, width);
-        y = random(0, height);
+        // Set a random initial point of origin
+        x = floor(random(width));
+        y = floor(random(height));
         //set dot size
         size = 1;
 
         //set random rgb color
-        color[0] = random(255);
-        color[1] = random(255);
-        color[2] = random(255);
+        color[0] = floor(random(255));
+        color[1] = floor(random(255));
+        color[2] = floor(random(255));
     }
 
     void display(){
         strokeWeight(size);
-        float alpha = random(50,255);
+        float alpha = floor(random(50,255));
         stroke(color[0], color[1], color[2], alpha);
         point(x, y);
     }
 
    void update(){
-        xStepSize = random(-10, 10) + x;
-        yStepSize = random(-10, 10) + y;        
+        xStepSize = floor(random(-10, 10)) + x;
+        yStepSize = floor(random(-10, 10)) + y;        
             
         boolean outOfBoundaryX =  xStepSize > width || xStepSize < 0;
         boolean outOfBoundaryY = yStepSize > height || yStepSize < 0;
 
         // We don't want the dots to spawn out of the window
+        // Reset the Dot initial position to a random point inside the canvas
         // call update() again and try a new location
         if(outOfBoundaryX || outOfBoundaryY){
+            x = floor(random(width));
+            y = floor(random(height));
             update();
-        } else {
-            x = xStepSize;
-            y = yStepSize;
-            display();
+            return;
         }
+
+        x = xStepSize;
+        y = yStepSize;
+        display();
     }
 }
 
